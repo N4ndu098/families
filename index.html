@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Families | Dashboard de Crafting</title>
+    <style>
+        :root {
+            --bg-main: #0a0b0d;
+            --bg-card: #141619;
+            --bg-input: #1c1f24;
+            --grove-neon: #2ecc71;
+            --grove-dark: #1b5e20;
+            --text-main: #f5f6fa;
+            --text-muted: #7f8c8d;
+            --border-glow: rgba(46, 204, 113, 0.2);
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--grove-neon);
+            margin: 0 0 10px 0;
+            text-shadow: 0 0 10px var(--border-glow);
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 1.1em;
+        }
+
+        /* Grid de Inputs */
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card-input {
+            background-color: var(--bg-card);
+            border: 1px solid #23272a;
+            border-top: 4px solid var(--grove-neon);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card-input label {
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .card-input input[type="number"] {
+            background-color: var(--bg-input);
+            border: 1px solid #2c3238;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1.3em;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .card-input input[type="number"]:focus {
+            border-color: var(--grove-neon);
+            box-shadow: 0 0 8px var(--border-glow);
+        }
+
+        /* Botão de Ação */
+        .btn-calc {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, var(--grove-dark), var(--grove-neon));
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-calc:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.5);
+        }
+
+        /* Seção de Resultados */
+        .results-container {
+            display: none;
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card-result {
+            background-color: var(--bg-card);
+            border: 1px solid #23272a;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-result h2 {
+            font-size: 1.4em;
+            color: var(--grove-neon);
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #2c3238;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Listas de Materiais */
+        .material-block {
+            margin-bottom: 20px;
+        }
+
+        .material-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .material-block h3 {
+            font-size: 0.95em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin: 0 0 10px 0;
+        }
+
+        .mat-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mat-list li {
+            background-color: var(--bg-input);
+            padding: 12px 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1em;
+            border-left: 3px solid #3a4149;
+        }
+
+        /* Diferenciação Visual do Subproduto */
+        .subproduct-list li {
+            border-left-color: #f39c12; 
+        }
+
+        .mat-list li span.qty {
+            font-weight: 700;
+            color: #fff;
+            background-color: #2c3238;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        
+        .card-result .qty-total {
+            color: var(--text-main);
+            font-size: 0.8em;
+            background: var(--grove-dark);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Calculadora Families</h1>
+        <p>Painel Tático de Crafting & Distribuição de Materiais</p>
+    </header>
+
+    <div class="input-grid">
+        <div class="card-input">
+            <label for="qtdColete">Colete Balístico</label>
+            <input type="number" id="qtdColete" min="0" value="0">
+        </div>
+        <div class="card-input">
+            <label for="qtdM1911">M1911 (Arma Final)</label>
+            <input type="number" id="qtdM1911" min="0" value="0">
+        </div>
+        <div class="card-input">
+            <label for="qtdAti">Ati FX45</label>
+            <input type="number" id="qtdAti" min="0" value="0">
+        </div>
+    </div>
+
+    <button class="btn-calc" onclick="calcular()">Calcular Linha de Produção</button>
+
+    <div class="results-container" id="resultados">
+        <div class="results-grid" id="gridResultados">
+            </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
