@@ -53,7 +53,7 @@ function calcular() {
                 </div>
 
                 <div class="material-block">
-                    <h3>Para a Montagem Final:</h3>
+                    <h3>Para a Montagem :</h3>
                     <ul class="mat-list">
                         <li>Real Sujo <span class="qty">${(qtdColete * 500).toLocaleString('pt-BR')}x</span></li>
                         <li>Lona <span class="qty">${(qtdColete * 2).toLocaleString('pt-BR')}x</span></li>
@@ -78,7 +78,7 @@ function calcular() {
     }
 
     // ==========================================
-    // 2. CÁLCULO DA M1911 (Como arma final)
+    // 2. CÁLCULO DA M1911 
     // ==========================================
     if (qtdM1911_final > 0) {
         gerouAlgumResultado = true;
@@ -93,7 +93,7 @@ function calcular() {
 
         htmlCards += `
             <div class="card-result">
-                <h2>M1911 (Final) <span class="qty-total">${qtdM1911_final}x</span></h2>
+                <h2>M1911<span class="qty-total">${qtdM1911_final}x</span></h2>
                 
                 <div class="material-block">
                     <h3>Valores de Venda (${nomeTabela}):</h3>
@@ -104,7 +104,7 @@ function calcular() {
                 </div>
 
                 <div class="material-block">
-                    <h3>Para a Montagem Final:</h3>
+                    <h3>Para a Montagem:</h3>
                     <ul class="mat-list">
                         <li>Real Sujo <span class="qty">${(qtdM1911_final * 1000).toLocaleString('pt-BR')}x</span></li>
                         <li>Peças de Arma Leve <span class="qty">${totalPecasLevesM1911.toLocaleString('pt-BR')}x</span></li>
@@ -158,7 +158,7 @@ function calcular() {
                 </div>
 
                 <div class="material-block">
-                    <h3>Para a Montagem Final:</h3>
+                    <h3>Para a Montagem:</h3>
                     <ul class="mat-list">
                         <li>M1911 Pronta <span class="qty">${m1911Necessarias.toLocaleString('pt-BR')}x</span></li>
                         <li>Real Sujo <span class="qty">${(qtdAti * 1000).toLocaleString('pt-BR')}x</span></li>
