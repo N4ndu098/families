@@ -54,7 +54,7 @@
         /* Grid de Inputs */
         .input-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -77,19 +77,26 @@
             letter-spacing: 0.5px;
         }
 
-        .card-input input[type="number"] {
+        .card-input input[type="number"],
+        .card-input select {
             background-color: var(--bg-input);
             border: 1px solid #2c3238;
             color: white;
             padding: 12px;
             border-radius: 8px;
-            font-size: 1.3em;
+            font-size: 1.2em;
             text-align: center;
             outline: none;
             transition: all 0.3s ease;
         }
 
-        .card-input input[type="number"]:focus {
+        .card-input select {
+            cursor: pointer;
+            appearance: none;
+        }
+
+        .card-input input[type="number"]:focus,
+        .card-input select:focus {
             border-color: var(--grove-neon);
             box-shadow: 0 0 8px var(--border-glow);
         }
@@ -223,6 +230,14 @@
 
     <div class="input-grid">
         <div class="card-input">
+            <label for="tipoVenda">Tabela de Preços</label>
+            <select id="tipoVenda">
+                <option value="parceria">Parceria</option>
+                <option value="cnpj">CNPJ</option>
+                <option value="pista">Pista</option>
+            </select>
+        </div>
+        <div class="card-input">
             <label for="qtdColete">Colete Balístico</label>
             <input type="number" id="qtdColete" min="0" value="0">
         </div>
@@ -240,7 +255,7 @@
 
     <div class="results-container" id="resultados">
         <div class="results-grid" id="gridResultados">
-            </div>
+        </div>
     </div>
 </div>
 

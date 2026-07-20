@@ -1,5 +1,6 @@
 function calcular() {
     // Pegando inputs
+    const tipoVenda = document.getElementById('tipoVenda').value;
     const qtdColete = parseInt(document.getElementById('qtdColete').value) || 0;
     const qtdM1911_final = parseInt(document.getElementById('qtdM1911').value) || 0;
     const qtdAti = parseInt(document.getElementById('qtdAti').value) || 0;
@@ -9,6 +10,16 @@ function calcular() {
 
     let gerouAlgumResultado = false;
 
+    // Tabela de Preços com base nos flyers e ajustes
+    const tabelaPrecos = {
+        parceria: { colete: { limpo: 26000, sujo: 33000 }, m1911: { limpo: 26000, sujo: 33000 }, ati: { limpo: 37000, sujo: 48000 } },
+        cnpj: { colete: { limpo: 30000, sujo: 39000 }, m1911: { limpo: 30000, sujo: 39000 }, ati: { limpo: 40000, sujo: 52000 } },
+        pista: { colete: { limpo: 40000, sujo: 52000 }, m1911: { limpo: 40000, sujo: 52000 }, ati: { limpo: 60000, sujo: 78000 } }
+    };
+
+    const precos = tabelaPrecos[tipoVenda];
+    const nomeTabela = tipoVenda.charAt(0).toUpperCase() + tipoVenda.slice(1);
+
     // ==========================================
     // 1. CÁLCULO DO COLETE BALÍSTICO
     // ==========================================
@@ -16,10 +27,21 @@ function calcular() {
         gerouAlgumResultado = true;
         const totalPlacas = qtdColete * 1;
 
+        const valorLimpo = precos.colete.limpo * qtdColete;
+        const valorSujo = precos.colete.sujo * qtdColete;
+
         let htmlColete = `
             <div class="card-result">
                 <h2>Colete Balístico <span class="qty-total">${qtdColete}x</span></h2>
                 
+                <div class="material-block">
+                    <h3>Valores de Venda (${nomeTabela}):</h3>
+                    <ul class="mat-list">
+                        <li>Dinheiro Limpo <span class="qty">$${valorLimpo.toLocaleString('pt-BR')}</span></li>
+                        <li>Dinheiro Sujo <span class="qty">$${valorSujo.toLocaleString('pt-BR')}</span></li>
+                    </ul>
+                </div>
+
                 <div class="material-block">
                     <h3>Para a Montagem Final:</h3>
                     <ul class="mat-list">
@@ -53,10 +75,21 @@ function calcular() {
         gerouAlgumResultado = true;
         const totalPecasLevesM1911 = qtdM1911_final * 2;
 
+        const valorLimpo = precos.m1911.limpo * qtdM1911_final;
+        const valorSujo = precos.m1911.sujo * qtdM1911_final;
+
         let htmlM1911 = `
             <div class="card-result">
                 <h2>M1911 (Final) <span class="qty-total">${qtdM1911_final}x</span></h2>
                 
+                <div class="material-block">
+                    <h3>Valores de Venda (${nomeTabela}):</h3>
+                    <ul class="mat-list">
+                        <li>Dinheiro Limpo <span class="qty">$${valorLimpo.toLocaleString('pt-BR')}</span></li>
+                        <li>Dinheiro Sujo <span class="qty">$${valorSujo.toLocaleString('pt-BR')}</span></li>
+                    </ul>
+                </div>
+
                 <div class="material-block">
                     <h3>Para a Montagem Final:</h3>
                     <ul class="mat-list">
@@ -92,10 +125,22 @@ function calcular() {
         const m1911Necessarias = qtdAti * 1;
         const pecasLevesNecessariasATI = m1911Necessarias * 2;
 
+        const valorLimpo = precos.ati.limpo * qtdAti;
+        const valorSujo = precos.ati.sujo * qtdAti;
+
         let htmlAti = `
             <div class="card-result">
                 <h2>Ati FX45 <span class="qty-total">${qtdAti}x</span></h2>
                 
+                <div class="material-block">
+                    <h3>Valores de Venda (${nomeTabela}):</h3>
+                    <ul class="mat-list">
+                        <li>Dinheiro Limpo <span class="qty">$${valorLimpo.toLocaleString('pt-BR')}</span></li>
+                        <li>Dinheiro Sujo <span class="qty">$${valorSujo.toLocaleString('pt-BR')}</span></li>
+                    </ul>
+                    <p style="color: #f39c12; font-size: 0.85em; margin-top: 10px;">*Necessário trazer 2 UP's por unidade.</p>
+                </div>
+
                 <div class="material-block">
                     <h3>Para a Montagem Final:</h3>
                     <ul class="mat-list">
