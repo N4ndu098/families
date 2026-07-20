@@ -10,6 +10,10 @@ function calcular() {
 
     let gerouAlgumResultado = false;
 
+    // Variáveis para somar o valor total da venda
+    let totalLimpoGeral = 0;
+    let totalSujoGeral = 0;
+
     // Tabela de Preços com base nos flyers e ajustes
     const tabelaPrecos = {
         parceria: { colete: { limpo: 26000, sujo: 33000 }, m1911: { limpo: 26000, sujo: 33000 }, ati: { limpo: 37000, sujo: 48000 } },
@@ -19,6 +23,8 @@ function calcular() {
 
     const precos = tabelaPrecos[tipoVenda];
     const nomeTabela = tipoVenda.charAt(0).toUpperCase() + tipoVenda.slice(1);
+
+    let htmlCards = ''; // Variável para armazenar os cards dos itens
 
     // ==========================================
     // 1. CÁLCULO DO COLETE BALÍSTICO
@@ -30,7 +36,11 @@ function calcular() {
         const valorLimpo = precos.colete.limpo * qtdColete;
         const valorSujo = precos.colete.sujo * qtdColete;
 
-        let htmlColete = `
+        // Somando ao total geral
+        totalLimpoGeral += valorLimpo;
+        totalSujoGeral += valorSujo;
+
+        htmlCards += `
             <div class="card-result">
                 <h2>Colete Balístico <span class="qty-total">${qtdColete}x</span></h2>
                 
@@ -65,7 +75,6 @@ function calcular() {
                 </div>
             </div>
         `;
-        gridResultados.innerHTML += htmlColete;
     }
 
     // ==========================================
@@ -78,7 +87,11 @@ function calcular() {
         const valorLimpo = precos.m1911.limpo * qtdM1911_final;
         const valorSujo = precos.m1911.sujo * qtdM1911_final;
 
-        let htmlM1911 = `
+        // Somando ao total geral
+        totalLimpoGeral += valorLimpo;
+        totalSujoGeral += valorSujo;
+
+        htmlCards += `
             <div class="card-result">
                 <h2>M1911 (Final) <span class="qty-total">${qtdM1911_final}x</span></h2>
                 
@@ -112,7 +125,6 @@ function calcular() {
                 </div>
             </div>
         `;
-        gridResultados.innerHTML += htmlM1911;
     }
 
     // ==========================================
@@ -128,7 +140,11 @@ function calcular() {
         const valorLimpo = precos.ati.limpo * qtdAti;
         const valorSujo = precos.ati.sujo * qtdAti;
 
-        let htmlAti = `
+        // Somando ao total geral
+        totalLimpoGeral += valorLimpo;
+        totalSujoGeral += valorSujo;
+
+        htmlCards += `
             <div class="card-result">
                 <h2>Ati FX45 <span class="qty-total">${qtdAti}x</span></h2>
                 
@@ -173,13 +189,29 @@ function calcular() {
                 </div>
             </div>
         `;
-        gridResultados.innerHTML += htmlAti;
     }
 
-    // Exibe ou esconde o container principal de resultados
+    // Exibe ou esconde o container principal de resultados e insere o Total Geral
     const containerResultados = document.getElementById('resultados');
     if (gerouAlgumResultado) {
+        
+        // Criando o Card do Resumo Total (vai ocupar a largura toda)
+        let htmlTotal = `
+            <div class="card-result" style="border-top: 4px solid #f39c12; grid-column: 1 / -1;">
+                <h2 style="color: #f39c12;">💰 Resumo Total da Venda (${nomeTabela})</h2>
+                <div class="material-block">
+                    <ul class="mat-list">
+                        <li>Total em Dinheiro Limpo <span class="qty" style="background-color: #27ae60; color: white;">$${totalLimpoGeral.toLocaleString('pt-BR')}</span></li>
+                        <li>Total em Dinheiro Sujo <span class="qty" style="background-color: #c0392b; color: white;">$${totalSujoGeral.toLocaleString('pt-BR')}</span></li>
+                    </ul>
+                </div>
+            </div>
+        `;
+
+        // Insere o Total primeiro, e depois os cards dos itens
+        gridResultados.innerHTML = htmlTotal + htmlCards;
         containerResultados.style.display = 'block';
+
     } else {
         containerResultados.style.display = 'none';
         alert('Por favor, insira a quantidade de pelo menos um item para calcular!');
