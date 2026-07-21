@@ -14,15 +14,21 @@ function calcular() {
     let totalLimpoGeral = 0;
     let totalSujoGeral = 0;
 
-    // Tabela de Preços com base nos flyers e ajustes
+    // Tabela de Preços com a categoria "Aliança"
     const tabelaPrecos = {
         parceria: { colete: { limpo: 26000, sujo: 33000 }, m1911: { limpo: 26000, sujo: 33000 }, ati: { limpo: 37000, sujo: 48000 } },
+        alianca: { colete: { limpo: 23000, sujo: 29900 }, m1911: { limpo: 23000, sujo: 29900 }, ati: { limpo: 34000, sujo: 44200 } },
         cnpj: { colete: { limpo: 30000, sujo: 39000 }, m1911: { limpo: 30000, sujo: 39000 }, ati: { limpo: 40000, sujo: 52000 } },
         pista: { colete: { limpo: 40000, sujo: 52000 }, m1911: { limpo: 40000, sujo: 52000 }, ati: { limpo: 60000, sujo: 78000 } }
     };
 
     const precos = tabelaPrecos[tipoVenda];
-    const nomeTabela = tipoVenda.charAt(0).toUpperCase() + tipoVenda.slice(1);
+    
+    // Ajuste no nome da tabela para exibição
+    let nomeTabela = tipoVenda.charAt(0).toUpperCase() + tipoVenda.slice(1);
+    if (tipoVenda === 'alianca') {
+        nomeTabela = 'Aliança';
+    }
 
     let htmlCards = ''; // Variável para armazenar os cards dos itens
 
@@ -33,8 +39,22 @@ function calcular() {
         gerouAlgumResultado = true;
         const totalPlacas = qtdColete * 1;
 
-        const valorLimpo = precos.colete.limpo * qtdColete;
-        const valorSujo = precos.colete.sujo * qtdColete;
+        let precoColeteLimpo;
+        let precoColeteSujo;
+        let avisoDesconto = '';
+
+        
+        if (tipoVenda === 'alianca' && qtdColete >= 30) {
+            precoColeteLimpo = 22000;
+            precoColeteSujo = 28600;
+            avisoDesconto = `<p style="color: #2ecc71; font-size: 0.85em; margin-top: 10px;">✅ Desconto de atacado aplicado (>30 un).</p>`;
+        } else {
+            precoColeteLimpo = precos.colete.limpo;
+            precoColeteSujo = precos.colete.sujo;
+        }
+
+        const valorLimpo = precoColeteLimpo * qtdColete;
+        const valorSujo = precoColeteSujo * qtdColete;
 
         // Somando ao total geral
         totalLimpoGeral += valorLimpo;
@@ -50,10 +70,11 @@ function calcular() {
                         <li>Dinheiro Limpo <span class="qty">$${valorLimpo.toLocaleString('pt-BR')}</span></li>
                         <li>Dinheiro Sujo <span class="qty">$${valorSujo.toLocaleString('pt-BR')}</span></li>
                     </ul>
+                    ${avisoDesconto}
                 </div>
 
                 <div class="material-block">
-                    <h3>Para a Montagem :</h3>
+                    <h3>Para a Montagem Final:</h3>
                     <ul class="mat-list">
                         <li>Real Sujo <span class="qty">${(qtdColete * 500).toLocaleString('pt-BR')}x</span></li>
                         <li>Lona <span class="qty">${(qtdColete * 2).toLocaleString('pt-BR')}x</span></li>
@@ -78,7 +99,7 @@ function calcular() {
     }
 
     // ==========================================
-    // 2. CÁLCULO DA M1911 
+    // 2. CÁLCULO DA M1911 (Como arma final)
     // ==========================================
     if (qtdM1911_final > 0) {
         gerouAlgumResultado = true;
@@ -93,7 +114,7 @@ function calcular() {
 
         htmlCards += `
             <div class="card-result">
-                <h2>M1911<span class="qty-total">${qtdM1911_final}x</span></h2>
+                <h2>M1911 (Final) <span class="qty-total">${qtdM1911_final}x</span></h2>
                 
                 <div class="material-block">
                     <h3>Valores de Venda (${nomeTabela}):</h3>
@@ -104,7 +125,7 @@ function calcular() {
                 </div>
 
                 <div class="material-block">
-                    <h3>Para a Montagem:</h3>
+                    <h3>Para a Montagem Final:</h3>
                     <ul class="mat-list">
                         <li>Real Sujo <span class="qty">${(qtdM1911_final * 1000).toLocaleString('pt-BR')}x</span></li>
                         <li>Peças de Arma Leve <span class="qty">${totalPecasLevesM1911.toLocaleString('pt-BR')}x</span></li>
@@ -158,7 +179,7 @@ function calcular() {
                 </div>
 
                 <div class="material-block">
-                    <h3>Para a Montagem:</h3>
+                    <h3>Para a Montagem Final:</h3>
                     <ul class="mat-list">
                         <li>M1911 Pronta <span class="qty">${m1911Necessarias.toLocaleString('pt-BR')}x</span></li>
                         <li>Real Sujo <span class="qty">${(qtdAti * 1000).toLocaleString('pt-BR')}x</span></li>
